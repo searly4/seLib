@@ -1,3 +1,7 @@
+#include <ProjectConfig.h>
+
+#if defined(EnableModule_seLib_Filtering) && EnableModule_seLib_Filtering
+
 #include <seLib/experimental/Filtering/Filter.h>
 
 namespace seLib {
@@ -208,3 +212,5 @@ void Window_Filter::Process(const vector<float>& input, vector<float>& output) {
 
 }
 }
+
+#endif

@@ -26,11 +26,10 @@ namespace seLib {
 #endif
 #endif
 
-// Receiver function for PacketStream packets.
-typedef void(*PacketStreamCallback)(const PacketStreamDescriptor& descriptor, const uint8_t* packetdata, void* reference);
-
 struct PacketStreamDescriptor;
 
+// Receiver function for PacketStream packets.
+typedef void(*PacketStreamCallback)(const PacketStreamDescriptor& descriptor, const uint8_t* packetdata, void* reference);
 
 struct PacketStreamReceiver {
     PacketStreamCallback callback;
@@ -48,13 +47,41 @@ namespace seLib {
 struct PacketStreamDescriptor {
     int PacketType;
     size_t PacketSize;
-    int ReceiverCount;
+    size_t ReceiverCount;
     PacketStreamReceiver const * Receivers;
 
     void Notify(const void* buffer) const {
-        for (int i = 0; i < ReceiverCount; i++) {
+        for (size_t i = 0; i < ReceiverCount; i++) {
             auto t = Receivers[i];
             t.callback(*this, (const uint8_t*)buffer, t.reference);
+        }
+    }
+};
+
+template <typename Packet_T>
+struct TypedPacketStreamDescriptor {
+	// Receiver function for PacketStream packets.
+	//typedef void(*TypedPacketStreamCallback)(TypedPacketStreamDescriptor<Packet_T> const & descriptor, Packet_T const & packetdata);
+	typedef void(*TypedPacketStreamCallback)(TypedPacketStreamDescriptor<Packet_T> const & descriptor, Packet_T const & packetdata, void* ref);
+
+	struct Receiver {
+		TypedPacketStreamCallback callback;
+		void* reference;
+	};
+
+    int PacketType;
+    size_t PacketSize;
+    size_t ReceiverCount;
+    Receiver const * Receivers;
+	
+	constexpr TypedPacketStreamDescriptor(int packet_type, Receiver const * receivers, size_t receiver_count)
+		: PacketType(packet_type), PacketSize(sizeof(Packet_T)), Receivers(receivers), ReceiverCount(receiver_count)
+	{}
+	
+    void Notify(Packet_T const & buffer) const {
+        for (size_t i = 0; i < ReceiverCount; i++) {
+            auto t = Receivers[i];
+            t.callback(*this, buffer, t.ref);
         }
     }
 };

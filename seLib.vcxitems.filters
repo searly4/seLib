@@ -1,0 +1,122 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{ae5e9f82-475e-4425-9853-135609aa34f7}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{f3b8f273-8e7d-4c65-b69f-7ee2ab24d004}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Source Files\Experimental">
+      <UniqueIdentifier>{fef365c9-44b2-4d7c-b915-120adb3decb9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Experimental">
+      <UniqueIdentifier>{f394dc1a-cba3-42fd-bbe1-dbbb8628dcd7}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\experimental\CSVFile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\experimental\seLib_Util.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\experimental\ServiceModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\experimental\Filtering\Analyzer.cpp">
+      <Filter>Source Files\Experimental</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\experimental\Filtering\Filter1.cpp">
+      <Filter>Source Files\Experimental</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\experimental\NRF52.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\experimental\NRF52_BLE_Module.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\seLib\Debounce.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\seLib\FixedPoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\seLib\RefObj.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\seLib\experimental\CalcCurve.h">
+      <Filter>Header Files\Experimental</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\seLib\experimental\CSVFile.h">
+      <Filter>Header Files\Experimental</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\seLib\experimental\DataSet.h">
+      <Filter>Header Files\Experimental</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\seLib\experimental\Hysteresis.h">
+      <Filter>Header Files\Experimental</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\seLib\experimental\Interpolator.h">
+      <Filter>Header Files\Experimental</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\seLib\experimental\PacketStream.h">
+      <Filter>Header Files\Experimental</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\seLib\experimental\ParseArgs.h">
+      <Filter>Header Files\Experimental</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\seLib\experimental\seLib_Util.h">
+      <Filter>Header Files\Experimental</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\seLib\experimental\Serializable.h">
+      <Filter>Header Files\Experimental</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\seLib\experimental\ServiceModel.h">
+      <Filter>Header Files\Experimental</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\seLib\experimental\Timer.h">
+      <Filter>Header Files\Experimental</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\seLib\experimental\Filtering\Analyzer.h">
+      <Filter>Header Files\Experimental</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\seLib\experimental\Filtering\DCT.h">
+      <Filter>Header Files\Experimental</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\seLib\experimental\Filtering\fft5.h">
+      <Filter>Header Files\Experimental</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\seLib\experimental\Filtering\Filter.h">
+      <Filter>Header Files\Experimental</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\seLib\experimental\MCU_HAL.h">
+      <Filter>Header Files\Experimental</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\seLib\experimental\BitTransitions.h">
+      <Filter>Header Files\Experimental</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\seLib\experimental\BitFlags.h">
+      <Filter>Header Files\Experimental</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\seLib\experimental\NRF52_BLE_Module.h">
+      <Filter>Header Files\Experimental</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\seLib\experimental\NRF52.h">
+      <Filter>Header Files\Experimental</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\seLib\experimental\StateTransitions.h">
+      <Filter>Header Files\Experimental</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\seLib\Platform.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\seLib\experimental\Platform_NRF52.h">
+      <Filter>Header Files\Experimental</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Globals">
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <ItemsProjectGuid>{ff838938-47f9-4b7b-ba56-8a1bced45710}</ItemsProjectGuid>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ProjectCapability Include="SourceItemsFromImports" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\experimental\NRF52.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\experimental\NRF52_BLE_Module.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\experimental\CSVFile.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\experimental\Filtering\Analyzer.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\experimental\Filtering\Filter1.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\experimental\seLib_Util.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)src\experimental\ServiceModel.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\seLib\experimental\BitFlags.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\seLib\experimental\BitTransitions.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\seLib\experimental\MCU_HAL.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\seLib\experimental\NRF52.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\seLib\experimental\NRF52_BLE_Module.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\seLib\experimental\Platform_NRF52.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\seLib\experimental\StateTransitions.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\seLib\Debounce.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\seLib\experimental\CalcCurve.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\seLib\experimental\CSVFile.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\seLib\experimental\DataSet.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\seLib\experimental\Filtering\Analyzer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\seLib\experimental\Filtering\DCT.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\seLib\experimental\Filtering\fft5.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\seLib\experimental\Filtering\Filter.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\seLib\experimental\Hysteresis.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\seLib\experimental\Interpolator.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\seLib\experimental\PacketStream.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\seLib\experimental\ParseArgs.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\seLib\experimental\seLib_Util.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\seLib\experimental\Serializable.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\seLib\experimental\ServiceModel.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\seLib\experimental\Timer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\seLib\FixedPoint.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\seLib\Platform.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)include\seLib\RefObj.h" />
+  </ItemGroup>
+</Project>

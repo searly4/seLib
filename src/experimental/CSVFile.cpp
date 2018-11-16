@@ -14,6 +14,10 @@
    limitations under the License.
 */
 
+#include <ProjectConfig.h>
+
+#if defined(EnableModule_seLib_CSVFile) && EnableModule_seLib_CSVFile
+
 #include <exception>
 
 #include <seLib/experimental/CSVFile.h>
@@ -151,3 +155,5 @@ void CSVFileWriter::WriteLine(vector<string> data) {
 
 }
 }
+
+#endif

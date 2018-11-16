@@ -1,3 +1,7 @@
+#include <ProjectConfig.h>
+
+#if defined(EnableModule_seLib_Filtering) && EnableModule_seLib_Filtering
+
 #define _USE_MATH_DEFINES
 #include <math.h>
 #include <algorithm>
@@ -180,3 +184,4 @@ TypedRefBufferView<DataSet> DCTAnalyzer<DCT_SIZE>::Process(vector<float>::const_
 
 }
 }
+#endif
