@@ -28,8 +28,6 @@
 namespace seLib {
 namespace Filtering {
 
-using namespace std;
-using namespace seLib;
 
 /*double calc_mean(vector<float>::const_iterator start, vector<float>::const_iterator end);
 double calc_stddev(vector<float>::const_iterator start, vector<float>::const_iterator end);

@@ -20,7 +20,6 @@
 
 #pragma warning(disable: 4521)
 
-using namespace std;
 
 namespace seLib {
 

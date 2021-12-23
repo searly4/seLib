@@ -21,7 +21,6 @@
 namespace seLib {
 namespace ParseArgs {
 
-using namespace std;
 
 struct ArgDefBase {
 	string_view ArgText;

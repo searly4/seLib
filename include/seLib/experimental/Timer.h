@@ -23,7 +23,6 @@
 
 namespace seLib {
 
-using namespace std;
 
 template <typename Counter_T, typename Callback_T, int count>
 class Timer_Comparator {

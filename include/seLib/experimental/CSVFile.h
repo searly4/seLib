@@ -27,7 +27,6 @@
 namespace seLib {
 namespace CSVFile {
 
-using namespace std;
 
 class CSVReader {
 public:

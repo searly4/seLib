@@ -28,8 +28,6 @@
 namespace seLib {
 namespace Filtering {
 
-using namespace std;
-using namespace seLib;
 
 template <int DCT_SIZE, typename T = float>
 class DCT {

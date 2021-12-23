@@ -20,7 +20,6 @@
 
 namespace seLib {
 
-using namespace std;
 
 class DataSet {
 public:

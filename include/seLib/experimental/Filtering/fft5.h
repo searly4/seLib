@@ -25,8 +25,6 @@
 namespace seLib {
 namespace Filtering {
 
-using namespace std;
-using namespace seLib;
 
 class FFT5 {
 public:

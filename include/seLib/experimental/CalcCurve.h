@@ -23,7 +23,6 @@
 
 namespace seLib {
 
-using namespace std;
 
 template <typename T>
 void CalcCurve(T* array, size_t count, T minval, T maxval, float gamma) {
