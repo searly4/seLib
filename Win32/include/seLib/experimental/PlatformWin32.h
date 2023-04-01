@@ -32,10 +32,10 @@ SOFTWARE.
 //#include <gl\glew.h>
 //#include <gl\glu.h>
 
-using namespace std;
-using namespace SE;
+//using namespace std;
+//using namespace SE;
 
-namespace SE {
+namespace seLib {
 namespace PlatformSupport{
 
 typedef float HGRfloat; // apply correct GL float type to HGraph generated vectors

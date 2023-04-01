@@ -2,9 +2,9 @@
 
 #include <string>
 
-using namespace std;
+//using namespace std;
 
-namespace SE {
+namespace seLib {
 namespace Debug {
 
 }

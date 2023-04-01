@@ -12,15 +12,23 @@ public:
 protected:
 	virtual void Last() = 0;
 
-	bool RefTake(RefAccessorBase_t const &) override {
+	bool RefTake(RefAccessorBase_t const &) {
 		Count++;
 		return true;
 	}
 
-	void RefRelease(RefAccessorBase_t const &) override {
+	void RefRelease(RefAccessorBase_t const &) {
 		Count--;
 		if (!Count)
 			Last();
+	}
+
+	bool RefTake(RefAccessorBase_t const & accessor) const override final {
+		return const_cast<RefCounter_t*>(this)->RefTake(accessor);
+	}
+
+	void RefRelease(RefAccessorBase_t const & accessor) const override final {
+		const_cast<RefCounter_t*>(this)->RefRelease(accessor);
 	}
 };
 
@@ -28,6 +36,8 @@ protected:
 template <typename T>
 class OptionalHeapRefCounter_t final : public RefCounter_t<T> {
 public:
+	struct NotInitializedException_t : std::exception {};
+
 	T* Instance { nullptr };
 
 protected:
@@ -38,30 +48,44 @@ protected:
 		Instance = nullptr;
 	}
 
-	T* data() override {
-		return Instance;
-	}
+	//[[nodiscard]] T* data() {
+	//	return Instance;
+	//}
+	//
+	//[[nodiscard]] T* data() const override {
+	//	return const_cast<OptionalHeapRefCounter_t*>(this)->data();
+	//}
 
 public:
 	template <typename...Args_T>
-	auto First(Args_T...args) {
+	[[nodiscard]] auto First(Args_T...args) {
 		if (!this->Count) {
 			Instance = new T(args...);
 		}
-		return RefHolder_t<T>::GetAccessor();
+		//return RefAccessor_t<T>(*this, Instance);
+		return RefHolderBase_t::GetAccessor<T>(Instance);
 	}
 
-	auto First() {
+	[[nodiscard]] auto First() {
 		if (!this->Count) {
 			Instance = new T();
 		}
-		return RefHolder_t<T>::GetAccessor();
+		return RefHolderBase_t::GetAccessor<T>(Instance);
 	}
 
-	seLib::RefAccessor_t<T> GetAccessor() {
+	template <typename T2 = T const>
+	[[nodiscard]] RefAccessor_t<T2> GetAccessor() const {
+		static_assert(std::is_const<T2>, "Requested type must be const.");
+		if (Instance == nullptr)
+			throw NotInitializedException_t();
+		return RefHolderBase_t::GetAccessor<T>(Instance);
+	}
+
+	template <typename T2 = T>
+	[[nodiscard]] RefAccessor_t<T2> GetAccessor() {
 		if (Instance == nullptr)
 			return First();
-		return RefHolder_t<T>::GetAccessor();
+		return RefHolderBase_t::GetAccessor<T>(Instance);
 	}
 };
 
@@ -76,18 +100,34 @@ protected:
 		delete this;
 	}
 
-	T* data() override {
-		return &Instance;
-	}
+	//[[nodiscard]] T* data() {
+	//	return Instance;
+	//}
+	//
+	//[[nodiscard]] T* data() const override {
+	//	return const_cast<SharedRefCounter_t*>(this)->data();
+	//}
 
 public:
 	template <typename...Args_T>
 	SharedRefCounter_t(Args_T...args) : Instance(args...) {}
 
 	template <typename...Args_T>
-	static auto Create(Args_T...args) {
+	[[nodiscard]] static auto Create(Args_T...args) {
 		auto instance = new SharedRefCounter_t<T>(args...);
 		return instance->GetAccessor();
+	}
+
+	template <typename T2 = T const>
+	[[nodiscard]] RefAccessor_t<T2> GetAccessor() const {
+		static_assert(std::is_const<T2>, "Requested type must be const.");
+		return RefHolderBase_t::GetAccessor<T2>(&Instance);
+		//return RefAccessor_t<T2>(*this, &Instance);
+	}
+
+	template <typename T2 = T>
+	[[nodiscard]] RefAccessor_t<T2> GetAccessor() {
+		return RefHolderBase_t::GetAccessor<T2>(&Instance);
 	}
 };
 
@@ -102,9 +142,13 @@ protected:
 		delete this;
 	}
 
-	T* data() override {
-		return &Instance;
-	}
+	//[[nodiscard]] T* data() {
+	//	return Instance;
+	//}
+	//
+	//[[nodiscard]] T* data() const override {
+	//	return const_cast<WrapRefCounter_t*>(this)->data();
+	//}
 
 public:
 	WrapRefCounter_t(T& arg) : Instance(arg) {}
@@ -112,6 +156,17 @@ public:
 	static auto Create(T& arg) {
 		auto instance = new SharedRefCounter_t<T>(arg);
 		return instance->GetAccessor();
+	}
+
+	template <typename T2 = T const>
+	[[nodiscard]] RefAccessor_t<T2> GetAccessor() const {
+		static_assert(std::is_const<T2>, "Requested type must be const.");
+		return RefHolderBase_t::GetAccessor<T2>(&Instance);
+	}
+
+	template <typename T2 = T>
+	[[nodiscard]] RefAccessor_t<T2> GetAccessor() {
+		return RefHolderBase_t::GetAccessor<T2>(&Instance);
 	}
 };
 

@@ -21,7 +21,9 @@
  *      Author: scotte
  */
 
+#ifdef SELIB_USE_CONFIG
 #include <seLib_Config.h>
+#endif
 
 #if defined(__NRF52)
 
@@ -427,4 +429,4 @@ void seLib_DebugString(const char* string) {
     }//*/
 }
 
-#endif
+#endif

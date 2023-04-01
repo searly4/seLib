@@ -90,7 +90,7 @@ struct TimeValue_t {
 			// Preserve extended range value when converting from format with smaller range.
 
 			constexpr size_t const preserve_start_bit = sizeof(Storage_T) * 8 - preserve_bits;
-			constexpr auto const mask = seLib::MaskBits<uint32_t>(preserve_start_bit); // lower bits 1
+			constexpr auto const mask = seLib::MaskBitsLow<uint32_t>(preserve_start_bit); // lower bits 1
 			constexpr auto const preserve_inc = (Storage_t)1 << preserve_start_bit;
 
 			auto preserve = ~mask & Value;

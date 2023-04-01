@@ -1,13 +1,13 @@
-#include "CppUnitTest.h"
-#include <PlatformCore.h>
-#include "Win32Trace.h"
 #include <Windows.h>
-#include <SEDebug.h>
+#include "CppUnitTest.h"
+#include "../include/seLib/experimental/PlatformCore.h"
+#include "../include/seLib/experimental/Win32Trace.h"
+#include "../include/seLib/experimental/Debug.h"
 
 using namespace std;
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
-namespace SE {
+namespace seLib {
 namespace Debug {
 
 void SETraceLog(const char* message, int level, const char* file, int line) {
@@ -18,13 +18,13 @@ void SETraceLog(const char* message, int level) {
   Trace::Default.Log(message, level);
 }
 
+Trace Trace::Default;
+
 int64_t _GetCurrentTime() {
   FILETIME time;
   GetSystemTimeAsFileTime(&time);
   return (LONGLONG)time.dwLowDateTime + ((LONGLONG)(time.dwHighDateTime) << 32LL);
 }
-
-Trace Trace::Default;
 
 Trace::Trace() : StartTime(_GetCurrentTime()) {
 }

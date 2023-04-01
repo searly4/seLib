@@ -12,6 +12,7 @@
 
 #include "Debug.h"
 #include "PlatformCore.h"
+#include "../RefObj.h"
 
 #undef PostMessage // fix Windows' usurping of this name
 

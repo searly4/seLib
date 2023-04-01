@@ -9,6 +9,7 @@ endif()
 
 file(GLOB seLib_INCLUDES ${CMAKE_CURRENT_LIST_DIR}/include/seLib/*.h)
 file(GLOB seLib_INCLUDES_EXP ${CMAKE_CURRENT_LIST_DIR}/include/seLib/experimental/*.h)
+file(GLOB seLib_INCLUDES_EXP2 ${CMAKE_CURRENT_LIST_DIR}/include/seLib/experimental/seLib/*.h)
 file(GLOB seLib_SOURCES ${CMAKE_CURRENT_LIST_DIR}/src/*.cpp)
 file(GLOB seLib_SOURCES_EXP ${CMAKE_CURRENT_LIST_DIR}/src/experimental/*.cpp)
 
@@ -21,9 +22,16 @@ target_include_directories(seLib PUBLIC
 	${CMAKE_CURRENT_LIST_DIR}/include
 )
 
+if(${seLib_USE_EXPERIMENTAL})
+	target_include_directories(seLib PUBLIC
+		${CMAKE_CURRENT_LIST_DIR}/include/seLib/experimental
+	)
+endif()
+
 target_sources(seLib PUBLIC
 	${seLib_INCLUDES}
 	${seLib_INCLUDES_EXP}
+	${seLib_INCLUDES_EXP2}
 	#${seLib_SOURCES}
 	#${seLib_SOURCES_EXP}
 )

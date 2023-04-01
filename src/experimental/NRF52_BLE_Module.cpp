@@ -14,7 +14,10 @@
    limitations under the License.
 */
 
+#ifdef SELIB_USE_CONFIG
 #include <seLib_Config.h>
+#endif
+
 #if defined(EnableModule_BLE) && defined(__NRF52)
 
 #include "seLib/experimental/NRF52_BLE_Module.h"

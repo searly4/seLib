@@ -336,17 +336,17 @@ public:
 	virtual char const * GetName(size_t index) const = 0;
 	virtual size_t size() const noexcept = 0;
 
-	class iterator_t : public seLib::Iterators::index_iterator_t<AttribListBase_t const> {
+	class iterator_t : public seLib::Iterators::IndexIterator_t<AttribListBase_t const, void> {
 	public:
 		using ref_t = AttribListBase_t const;
-		using index_iterator_t = seLib::Iterators::index_iterator_t<ref_t>;
+		using index_iterator_t = seLib::Iterators::IndexIterator_t<ref_t, void>;
 		constexpr iterator_t(ref_t & instance, size_t index) : index_iterator_t(instance, index) {}
 		constexpr iterator_t(iterator_t const &) = default;
 		//constexpr iterator_t(iterator_t<Instance_T> &&) = delete;
 
-		Attrib_t GetAttrib() const { return mInstance.GetAttrib(mIndex); }
-		char const * GetName() const { return mInstance.GetName(mIndex); }
-		size_t size() const noexcept { return mInstance.size(); }
+		Attrib_t GetAttrib() const { return mInstance->GetAttrib(mIndex); }
+		char const * GetName() const { return mInstance->GetName(mIndex); }
+		size_t size() const noexcept { return mInstance->size(); }
 		
 	};// */
 		

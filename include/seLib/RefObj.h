@@ -44,13 +44,13 @@ public:
 
 	void Subscribe() {
 		if (_RefCount == UINT32_MAX)
-			throw exception();
+			throw std::exception();
 		_RefCount++;
 	}
 
 	void Release() {
 		if (_RefCount == UINT32_MAX || _RefCount == 0)
-			throw exception();
+			throw std::exception();
 		_RefCount--;
 		if (_RefCount == 0)
 			delete this;
@@ -70,7 +70,7 @@ public:
 
 	void set(const uint8_t* source, size_t len, size_t offset) {
 		if (len + offset > _DataSize)
-			throw exception();
+			throw std::exception();
 		uint8_t* dest = _Data + offset;
 		const uint8_t* src_end = source + len;
 		while (source < src_end) {
@@ -167,7 +167,7 @@ public:
 
 	void set(const uint8_t* source, size_t len, size_t offset) {
 		if (_start + len + offset - 1 > _end)
-			throw exception();
+			throw std::exception();
 		uint8_t* dest = _start + offset;
 		const uint8_t* src_end = source + len;
 		while (source < src_end) {
@@ -200,7 +200,7 @@ public:
 
 	RefBufferView(RefBuffer* buffer, size_t offset, size_t len) : BufferView(**buffer + offset, len), _buffer(buffer) {
 		if (offset + len > _buffer->size())
-			throw exception();
+			throw std::exception();
 		_buffer->Subscribe();
 	}
 
@@ -242,11 +242,11 @@ public:
 
 	// BufferView assignments not accepted
 	BufferView& operator=(const BufferView&) override {
-		throw exception();
+		throw std::exception();
 	}
 	// BufferView assignments not accepted
 	BufferView& operator=(BufferView&&) override {
-		throw exception();
+		throw std::exception();
 	}
 
 	RefBufferView& operator=(const RefBufferView& view) {
@@ -286,7 +286,7 @@ public:
 
 	TypedBufferView(uint8_t* buffer, size_t len) : _start((Data_T*)buffer) {
 		if (len < sizeof(Data_T))
-			throw exception();
+			throw std::exception();
 	}
 
 	virtual ~TypedBufferView() { }
@@ -352,7 +352,7 @@ protected:
 		//if (offset + len > _buffer->size())
 			//throw exception();
 		if (_buffer != nullptr) {
-			_start = (Data_T*)(**_buffer + offset);
+			this->_start = (Data_T*)(**_buffer + offset);
 			_buffer->Subscribe();
 		}
 	}
@@ -384,7 +384,7 @@ public:
 		_buffer(new TypedManagedRefBuffer<Data_T>(std::forward<_Valty>(_Val)...)),
 		TypedBufferView<Data_T>(nullptr)
 	{
-		_start = (Data_T*)_buffer->operator*();
+		this->_start = (Data_T*)_buffer->operator*();
 		_buffer->Subscribe();
 	}//*/
 
@@ -395,11 +395,11 @@ public:
 
 	// BufferView assignments not accepted
 	TypedBufferView<Data_T>& operator=(const TypedBufferView<Data_T>&) override {
-		throw exception();
+		throw std::exception();
 	}
 	// BufferView assignments not accepted
 	TypedBufferView<Data_T>& operator=(TypedBufferView<Data_T>&&) override {
-		throw exception();
+		throw std::exception();
 	}
 
 	TypedRefBufferView<Data_T>& operator=(const TypedRefBufferView<Data_T>& view) {
@@ -419,7 +419,7 @@ public:
 
 	template<typename Cast_T>
 	TypedRefBufferView<Cast_T> cast() {
-		Cast_T* cast_ptr = (Cast_T*)_start;
+		Cast_T* cast_ptr = (Cast_T*)(this->_start);
 		size_t offset = (uint8_t*)cast_ptr - **_buffer;
 		return TypedRefBufferView<Cast_T>::from_RefBuffer(_buffer, offset);
 	}
@@ -519,7 +519,7 @@ public:
 
 //============================================================================
 
-namespace SE {
+namespace seLib {
 
 class RefObjContainerBase;
 template <typename _T> class RefObjContainer;
@@ -568,13 +568,13 @@ public:
 
 	void IncrementCount() {
 		if (_RefCount == UINT32_MAX)
-			throw exception();
+			throw std::exception();
 		_RefCount++;
 	}
 
 	void DecrementCount() {
 		if (_RefCount == UINT32_MAX)
-			throw exception();
+			throw std::exception();
 		_RefCount--;
 	}
 

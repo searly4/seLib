@@ -1,11 +1,13 @@
-#include <PlatformCore.h>
-#include "Win32Trace.h"
 #include <Windows.h>
-#include <SEDebug.h>
+
+#include "../include/seLib/experimental/PlatformCore.h"
+#include "../include/seLib/experimental/Win32Trace.h"
+#include "../include/seLib/experimental/Debug.h"
 
 using namespace std;
 
-namespace SE {
+
+namespace seLib {
 namespace Debug {
 
 void SETraceLog(const char* message, int level, const char* file, int line) {
@@ -25,7 +27,6 @@ int64_t _GetCurrentTime() {
 }
 
 Trace::Trace() : StartTime(_GetCurrentTime()) {
-
 }
 
 Trace::~Trace() {

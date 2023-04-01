@@ -14,7 +14,7 @@
    limitations under the License.
 */
 
-#include <seLib_Config.h>
+//#include <seLib_Config.h>
 
 #if defined(EnableModule_seLib_ServiceModel) && EnableModule_seLib_ServiceModel
 

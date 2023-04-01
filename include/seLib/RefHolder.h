@@ -1,6 +1,23 @@
 #pragma once
+/*
+   Copyright 2018 by Scott Early
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+*/
 
 namespace seLib {
+
+struct PointerOutOfRangeException_t : public std::exception {};
 
 template <typename T> class RefHolder_t;
 class RefAccessorBase_t;
@@ -11,66 +28,21 @@ template <typename T> class ConstWrapper_t;
 class RefHolderBase_t {
 protected:
 	friend class RefAccessorBase_t;
-	friend class ConstRefHolderBase_t;
-
-	virtual bool RefTake(RefAccessorBase_t const &) { return true; }
-	virtual void RefRelease(RefAccessorBase_t const &) {}
-
-public:
-	virtual ~RefHolderBase_t() {}
-};
-
-
-class ConstRefHolderBase_t {
-protected:
-	friend class RefAccessorBase_t;
 
 	virtual bool RefTake(RefAccessorBase_t const &) const { return true; }
 	virtual void RefRelease(RefAccessorBase_t const &) const {}
 	
-	static bool RefTake(RefHolderBase_t & holder, RefAccessorBase_t const & accessor) {
-		return holder.RefTake(accessor);
+	template <typename Value_T>
+	[[nodiscard]] RefAccessor_t<Value_T> GetAccessor(Value_T* value_ptr) {
+		return RefAccessor_t<Value_T>(*this, value_ptr);
 	}
-	static void RefRelease(RefHolderBase_t & holder, RefAccessorBase_t const & accessor) {
-		holder.RefRelease(accessor);
-	}
-public:
-	virtual ~ConstRefHolderBase_t() {}
-};
-
-
-template <typename T>
-class ConstRefHolder_t : public ConstRefHolderBase_t {
-protected:
-	friend class RefAccessor_t<T>;
-	friend class RefHolder_t<T>;
-	//class ConstWrapper_t;
-
-	virtual T* data() const = 0;
-	RefAccessor_t<T> GetAccessor() const {
-		return RefAccessor_t<T>(*this);
+	template <typename Value_T>
+	[[nodiscard]] RefAccessor_t<Value_T> GetAccessor(Value_T* value_ptr) const {
+		return RefAccessor_t<Value_T>(*this, value_ptr);
 	}
 
 public:
-};
-
-
-template <typename T>
-class ConstWrapper_t : public ConstRefHolder_t<T> {
-public:
-	RefHolder_t<T> & Holder;
-
-	ConstWrapper_t(RefHolder_t<T> & holder) : Holder(holder) {}
-
-	T* data() const override { return Holder.data(); }
-
-	bool RefTake(RefAccessorBase_t const & accessor) const override {
-		return ConstRefHolderBase_t::RefTake(Holder, accessor);
-	}
-
-	void RefRelease(RefAccessorBase_t const & accessor) const override {
-		ConstRefHolderBase_t::RefRelease(Holder, accessor);
-	}
+	virtual ~RefHolderBase_t() {}
 };
 
 
@@ -78,25 +50,22 @@ template <typename T>
 class RefHolder_t : public RefHolderBase_t {
 protected:
 	friend class RefAccessor_t<T>;
-	friend class ConstWrapper_t<T>;
 
-	ConstWrapper_t<T> ConstWrapper;
+	//virtual T* data() const = 0;
 
-	virtual T* data() = 0;
+	//template <typename T2 = T>
+	//typename std::enable_if_t<!std::is_same_v<T, T2>, RefAccessor_t<T2>>
+	//GetAccessor() const {
+	//	return RefAccessor_t<T2>(*this);
+	//}
+	//
+	//template <typename T2 = T>
+	//typename std::enable_if_t<std::is_same_v<T, T2>, RefAccessor_t<T>>
+	//GetAccessor() const {
+	//	return RefAccessor_t<T>(*this);
+	//}
 
-	template <typename T2 = T>
-	typename std::enable_if_t<!std::is_same_v<T, T2>, RefAccessor_t<T2>>
-	GetAccessor() const {
-		return RefAccessor_t<T2>(RefAccessor_t(ConstWrapper));
-	}
-
-	template <typename T2 = T>
-	typename std::enable_if_t<std::is_same_v<T, T2>, RefAccessor_t<T>>
-	GetAccessor() const {
-		return RefAccessor_t(ConstWrapper);
-	}
-
-	RefHolder_t() : RefHolderBase_t(), ConstWrapper(*this) {}
+	RefHolder_t() : RefHolderBase_t() {}
 public:
 };
 
@@ -104,7 +73,7 @@ public:
 class RefAccessorBase_t {
 protected:
 	friend class RefHolderBase_t;
-	ConstRefHolderBase_t const * Holder { nullptr };
+	RefHolderBase_t const * Holder { nullptr };
 
 	void RefRelease() {
 		if (Holder == nullptr)
@@ -113,7 +82,7 @@ protected:
 		Holder = nullptr;
 	}
 
-	bool RefTake(ConstRefHolderBase_t const * new_holder) {
+	bool RefTake(RefHolderBase_t const * new_holder) {
 		if (Holder != nullptr)
 			RefRelease();
 		if (new_holder == nullptr)
@@ -130,7 +99,7 @@ protected:
 
 	RefAccessorBase_t() {}
 
-	RefAccessorBase_t(ConstRefHolderBase_t const & holder) {
+	RefAccessorBase_t(RefHolderBase_t const & holder) {
 		RefTake(&holder);
 	}
 
@@ -161,12 +130,17 @@ public:
 template <typename T>
 class RefAccessor_t : public RefAccessorBase_t {
 protected:
-	friend class RefHolder_t<T>;
-	friend class ConstRefHolder_t<T>;
+	friend class RefHolderBase_t;
+	//friend class RefHolder_t<T>;
 
 	T* Data { nullptr };
 
-	RefAccessor_t(ConstRefHolder_t<T> const & b)
+	RefAccessor_t(RefHolderBase_t const & b, T* data_ptr)
+		: RefAccessorBase_t(b),
+		Data((Holder != nullptr) ? data_ptr : nullptr)
+	{}
+
+	RefAccessor_t(RefHolder_t<T> const & b)
 		: RefAccessorBase_t(b),
 		Data((Holder != nullptr) ? b.data() : nullptr)
 	{}
@@ -200,57 +174,99 @@ public:
 		return *this;
 	}
 
-	T* operator->() const {
+	[[nodiscard]] T* operator->() const {
 		return Data;
 	}
 
-	T& operator*() const {
+	[[nodiscard]] T& operator*() const {
 		return *Data;
 	}
 
-	T* data() const {
+	[[nodiscard]] auto operator[](size_t index) const {
+		return (*Data)[index];
+	}
+
+	[[nodiscard]] T* data() const {
 		return Data;
 	}
 
-	bool operator==(RefAccessor_t const & b) const {
+	[[nodiscard]] bool operator==(RefAccessor_t const & b) const {
 		return Holder == b.Holder;
+	}
+
+	template <typename T2>
+	[[nodiscard]] RefAccessor_t<T2> Subobject(T2 * b) const {
+		//if (b < Data || b > (Data + sizeof(T))
+		//	throw PointerOutOfRangeException_t;
+		return RefAccessor_t<T2>(*Holder, b);
 	}
 };
 
 
+///-------------------------------------------------------------------------------------------------
+/// @class	StaticRefHolder_t
+/// @brief	An object container for static or stack storage.
+/// @tparam	T	Generic type parameter.
 template <typename T>
 class StaticRefHolder_t : public RefHolder_t<T> {
 protected:
 	T Instance;
 
-	bool RefTake(RefAccessorBase_t const &) override { return true; }
-	void RefRelease(RefAccessorBase_t const &) override {}
-	T* data() override {
-		return &Instance;
-	}
+	bool RefTake(RefAccessorBase_t const &) const override { return true; }
+	void RefRelease(RefAccessorBase_t const &) const override {}
+
+	//[[nodiscard]] T* data() {
+	//	return Instance;
+	//}
+	//
+	//[[nodiscard]] T* data() const override {
+	//	return const_cast<StaticRefHolder_t*>(this)->data();
+	//}
 
 public:
 	template <typename...Args_T>
 	StaticRefHolder_t(Args_T...args) : Instance(args...) {}
 	using RefHolder_t<T>::GetAccessor;
+
+	template <typename T2 = T const>
+	//typename std::enable_if_t<std::is_const<T2>, RefAccessor_t<T2>>
+	[[nodiscard]] RefAccessor_t<T2> GetAccessor() const {
+		static_assert(std::is_const<T2>, "Requested type must be const.");
+		return RefHolder_t<T>::template GetAccessor<T2>(&Instance);
+	}
+
+	template <typename T2 = T>
+	[[nodiscard]] RefAccessor_t<T2> GetAccessor() {
+		return RefHolder_t<T>::template GetAccessor<T2>(&Instance);
+	}
 };
 
 
+///-------------------------------------------------------------------------------------------------
+/// @class	StaticRefHolder_t<T const>
+/// @brief	An object container for static or stack storage. Specialized for const data.
+/// @tparam	T	Generic type parameter.
 template <typename T>
-class StaticRefHolder_t<T const> : public ConstRefHolder_t<T> {
+class StaticRefHolder_t<T const> : public RefHolder_t<T const> {
 protected:
 	T const Instance;
 
-	bool RefTake(RefAccessorBase_t const &) override { return true; }
-	void RefRelease(RefAccessorBase_t const &) override {}
-	T const * data() override {
-		return &Instance;
-	}
+	bool RefTake(RefAccessorBase_t const &) const override { return true; }
+	void RefRelease(RefAccessorBase_t const &) const override {}
+
+	//[[nodiscard]] T const * data() const override {
+	//	return &Instance;
+	//}
 
 public:
 	template <typename...Args_T>
-	StaticRefHolder_t(Args_T...args) : Instance(args...) {}
-	using ConstRefHolder_t<T const>::GetAccessor;
+	constexpr StaticRefHolder_t(Args_T...args) : Instance(args...) {}
+
+	template <typename T2 = T const>
+	[[nodiscard]] RefAccessor_t<T2> GetAccessor() const {
+		static_assert(std::is_const<T2>, "Requested type must be const.");
+		return RefAccessor_t<T2>(*this);
+	}
 };
 
 }
