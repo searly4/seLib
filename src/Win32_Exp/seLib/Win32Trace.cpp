@@ -1,8 +1,8 @@
 #include <Windows.h>
 
-#include "../include/seLib/experimental/PlatformCore.h"
-#include "../include/seLib/experimental/Win32Trace.h"
-#include "../include/seLib/experimental/Debug.h"
+#include <seLib/PlatformCore.h>
+#include <seLib/Win32Trace.h>
+#include <seLib/Debug.h>
 
 using namespace std;
 

@@ -14,7 +14,7 @@
    limitations under the License.
 */
 
-#include <seLib/experimental/seLib_Util.h>
+#include <seLib/seLib_Util.h>
 
 extern "C" {
   
