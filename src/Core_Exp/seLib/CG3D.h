@@ -10,7 +10,7 @@
 #include <seLib/RefHolder.h>
 #include <seLib/Vector.h>
 #include <seLib/BasicGeometry.h>
-#include <seLib/experimental/Matrix.h>
+#include <seLib/Matrix.h>
 
 namespace seLib { namespace CG {
 

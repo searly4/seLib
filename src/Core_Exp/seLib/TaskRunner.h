@@ -9,13 +9,14 @@
 
 #include <stdint.h>
 #include <stdlib.h>
-#include <concepts>
+//#include <concepts>
 /// \endcond
 
 //#include "Messages.h"
 //#include "Faults.h"
 //#include "LogQueue.h"
 //#include <xPort/xPort_Timing.h>
+#include <seLib/Time.h>
 #include <seLib/Timing.h>
 //#include <xPort/xPort_HAL_Util.h>
 #include <seLib/Filters.h>
@@ -43,6 +44,8 @@ enum class Status_e {
 	NotScheduled,
 	Invalid,
 };
+
+constexpr TimeValue32kHz_t<int32_t> Interval1Second{ TimeValue32kHz_t<int32_t>::FromRawValue(1 << TimeValue32kHz_t<int32_t>::Radix) };
 
 template <typename Timestamp_T, size_t ProviderCount_N>
 class TaskManager_t;

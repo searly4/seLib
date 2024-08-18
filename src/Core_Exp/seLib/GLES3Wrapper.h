@@ -2,11 +2,11 @@
 
 #include <map>
 
-#include <seLib/experimental/OGLWrapper.h>
+#include <seLib/OGLWrapper.h>
 #include <seLib/Sort.h>
 #include <seLib/ConstMap.h>
-#include <seLib/RefCounter.h>
-#include <seLib/experimental/Debug.h>
+#include <seLib/RefHolder.h>
+#include <seLib/Debug.h>
 
 namespace seLib {
 namespace CG {
@@ -253,7 +253,7 @@ public:
 
 	template <typename T, typename... Args_T>
 	ClassHandlerRef_t Create(Args_T...args) {
-		ClassHandlers.push_back(seLib::SharedRefCounter_t<T>::Create());
+		ClassHandlers.push_back(seLib::RefAccessor_t<T>::InstantiateShared());
 	}
 
 	// Inherited via GraphRenderer

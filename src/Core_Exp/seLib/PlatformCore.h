@@ -82,12 +82,12 @@ inline void LittleEndian_INT16(int16_t val, uint8_t* out) {
 
 namespace seLib {
 
-typedef std::mutex LockObj;
-
-class LockGuard {
-public:
-  LockGuard(LockObj& lock) {}
-};
+//using LockObj = std::mutex;
+//
+//class LockGuard {
+//public:
+//  LockGuard(LockObj& lock) {}
+//};
 
 }
 

@@ -28,7 +28,7 @@ public:
 
 	template <size_t Index_N>
 	constexpr auto MakeTupleLookup2() const noexcept {
-		std::array<Lookup_T*, sizeof...(Args_T) - Index_N> arry;
+		std::array<Lookup_T*, sizeof...(Args_T) - Index_N> arry{};
 		size_t index = 0;
 		arry[0] = (Lookup_T*)&std::get<Index_N>(Data);
 		if constexpr ((Index_N + 1) < sizeof...(Args_T))

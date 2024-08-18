@@ -10,7 +10,7 @@
 
 #if defined(TARGET_GL_GL)
 #ifdef _WIN32
-#include <Windows.h>
+//#include <Windows.h>
 #endif
 //#include <gl/GL.h>
 #define GLEW_STATIC
@@ -28,8 +28,8 @@
 #include <seLib/RefHolder.h>
 #include <seLib/Vector.h>
 #include <seLib/BasicGeometry.h>
-#include <seLib/experimental/Matrix.h>
-#include <seLib/experimental/CG3D.h>
+#include <seLib/Matrix.h>
+#include <seLib/CG3D.h>
 #include <seLib/ConstMap.h>
 #include <seLib/Iterators.h>
 #include <seLib/ArrayAccessor.h>

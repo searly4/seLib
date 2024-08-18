@@ -58,7 +58,7 @@ public:
 	bool IncludeLocation = true;
 	bool IncludeTime = true;
 	const int64_t StartTime;
-	void (*LogPrinter)(std::string message);
+	//void (*LogPrinter)(std::string message);
 
 public:
 	Trace();
@@ -83,7 +83,7 @@ public:
 	void Log(std::string message);
 	void Log(std::string message, const char* file, int line);
 
-	static void PrintfLogPrinter(std::string message);
+	//static void PrintfLogPrinter(std::string message);
 };
 
 class MessageException : public std::exception {
